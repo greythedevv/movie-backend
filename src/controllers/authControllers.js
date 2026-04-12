@@ -1,6 +1,7 @@
 
 import {prisma} from "../config/db.js"
 import bcrypt from "bcryptjs";
+import { generateToken } from "../utils/generateToken.js";
 
 const register = async(req, res)=>{
     const body = req.body;
@@ -29,6 +30,9 @@ const register = async(req, res)=>{
         
     });
 
+     // genrate jwt token
+     const token = generateToken(user.id)
+
     res.status(201).json({
         status: "success",
         data: {
@@ -36,7 +40,8 @@ const register = async(req, res)=>{
                 id: user.id,
                 name:name,
                 email:email,
-        }
+        },
+        token,
     }})
 }
 
@@ -60,6 +65,9 @@ const login = async (req, res) =>{
         return res.status(401).json({error: "invalid email or password"})
     }
 
+    // genrate jwt token
+    const token = generateToken(user.id)
+
 
     res.status(201).json({
         status: "success",
@@ -67,7 +75,8 @@ const login = async (req, res) =>{
             user:{
                 id: user.id,
                 email:email,
-        }
+        },
+        token,
     }})
 
 }
