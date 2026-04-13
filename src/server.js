@@ -6,7 +6,7 @@ import movieRoutes from "./routes/movieRoutes.js"
 import authRoutes from "./routes/authRoutes.js"
 import watchlistRoutes from "./routes/watchlistRoutes.js"
 
-
+// load environment variables
 config()
 connectDB()
 
@@ -21,6 +21,7 @@ app.use("/movies", movieRoutes)
 app.use("/auth", authRoutes)
 app.use("/watchlist", watchlistRoutes)
 
+// test route
 const PORT =5001;
 const server = app.listen(PORT, ()=>{
     console.log(`server running on PORT ${PORT}`)
