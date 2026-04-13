@@ -1,11 +1,6 @@
-// This is your Prisma schema file,
-// learn more about it in the docs: https://pris.ly/d/prisma-schema
-
-// Get a free hosted Postgres database in seconds: `npx create-db`
-
 generator client {
-  provider = "prisma-client-js"
-   engineType = "library"
+  provider   = "prisma-client-js"
+  engineType = "library"
 }
 
 datasource db {
@@ -14,55 +9,43 @@ datasource db {
 }
 
 model User {
-  id String @id @default(uuid())
-  name String 
-  email String @unique
-  password String
-  
-  createAt DateTime @default(now())
+  id        String   @id @default(uuid())
+  name      String
+  email     String   @unique
+  password  String
+  createdAt DateTime @default(now())   // ✅ fixed naming
 
-  movies Movie[] @relation("MovieCreator")
-  watchListItem WatchListItem[]
+  movies         Movie[]         @relation("MovieCreator")
+  watchListItems WatchListItem[]
 }
 
 model Movie {
-  id String @id @default(uuid())
-  title String
-  overview String
+  id          String   @id @default(uuid())
+  title       String
+  overview    String
   releaseYear Int
-  genres String[] @default([])
-  runtime Int?
-  posterUrl String?
-  createdBy String
-  
-  createAt DateTime @default(now())
+  genres      String   // ✅ SQLite-friendly
+  runtime     Int?
+  posterUrl   String
+  createdBy   String
+  createdAt   DateTime @default(now()) // ✅ fixed naming
 
-  creator User @relation("MovieCreator", fields: [createdBy], references: [id], onDelete: Cascade)
-  watchListItems WatchListItem []
-
+  creator        User             @relation("MovieCreator", fields: [createdBy], references: [id], onDelete: Cascade)
+  watchListItems WatchListItem[]
 }
 
 model WatchListItem {
-  id String @id @default(uuid())
-  userId String
-  movieId String
-  status WatchListStatus @default(PLANNED)
-  rating Int?
-  notes String?
+  id        String   @id @default(uuid())
+  userId    String
+  movieId   String
+  status    String   @default("PLANNED") // ✅ no enum
+  rating    Int?
+  notes     String?
   createdAt DateTime @default(now())
-  updatedAt DateTime @default(now())
+  updatedAt DateTime @updatedAt        // ✅ auto update
 
-  // relations
-  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
-   movie Movie @relation(fields: [movieId], references: [id], onDelete: Cascade)
+  user  User  @relation(fields: [userId], references: [id], onDelete: Cascade)
+  movie Movie @relation(fields: [movieId], references: [id], onDelete: Cascade)
 
-   @@unique([userId, movieId])
+  @@unique([userId, movieId])
 }
-
-enum WatchListStatus {
-  PLANNED
-  WATCHING
-  COMPLETED
-  DROPPED
-}
-
