@@ -5,7 +5,7 @@ const prisma = new PrismaClient();
 const main = async () => {
   console.log("Seeding movies...");
 
-  // ✅ Step 1: Create user FIRST
+  // Step 1: Create user FIRST
   const user = await prisma.user.create({
     data: {
       name: "Admin User",
