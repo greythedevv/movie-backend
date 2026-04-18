@@ -28,7 +28,7 @@ const main = async () => {
       genres: "Sci-Fi, Action, Thriller",
       runtime: 148,
       posterUrl: "https://example.com/inception.jpg",
-      createdBy: user.id, // ✅ FIX
+      createdBy: user.id, // 
     },
     {
       title: "The Dark Knight",
